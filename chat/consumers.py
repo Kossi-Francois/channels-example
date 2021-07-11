@@ -14,7 +14,7 @@ def ws_connect(message):
     # and if the Room exists. Otherwise, bails (meaning this is a some othersort
     # of websocket). So, this is effectively a version of _get_object_or_404.
     try:
-        prefix, label = message['path'].decode('ascii').strip('/').split('/')
+        prefix, label = message['path'].decode('utf8').strip('/').split('/')
         if prefix != 'chat':
             log.debug('invalid ws path=%s', message['path'])
             return
@@ -26,14 +26,17 @@ def ws_connect(message):
         log.debug('ws room does not exist label=%s', label)
         return
 
-    log.debug('chat connect room=%s client=%s:%s', 
+    log.debug('chat connect room=%s client=%s:%s',
         room.label, message['client'][0], message['client'][1])
-    
-    # Need to be explicit about the channel layer so that testability works
-    # This may be a FIXME?
-    Group('chat-'+label, channel_layer=message.channel_layer).add(message.reply_channel)
-
+    Group('chat-'+label).add(message.reply_channel)
     message.channel_session['room'] = room.label
+
+    # in order to establish the connection (as of Django 1.10 or so), it must be accepted
+    # see https://stackoverflow.com/questions/41817871/websocket-using-django-channels
+    # message.reply_channel.send({
+    #     'accept': True
+    # })
+
 
 @channel_session
 def ws_receive(message):
@@ -53,26 +56,24 @@ def ws_receive(message):
     try:
         data = json.loads(message['text'])
     except ValueError:
-        log.debug("ws message isn't json text=%s", text)
+        log.debug("ws message isn't json text=%s", message['text'])
         return
-    
+
     if set(data.keys()) != set(('handle', 'message')):
         log.debug("ws message unexpected format data=%s", data)
         return
 
     if data:
-        log.debug('chat message room=%s handle=%s message=%s', 
+        log.debug('chat message room=%s handle=%s message=%s',
             room.label, data['handle'], data['message'])
         m = room.messages.create(**data)
-
-        # See above for the note about Group
-        Group('chat-'+label, channel_layer=message.channel_layer).send({'text': json.dumps(m.as_dict())})
+        Group('chat-'+label).send({'text': json.dumps(m.as_dict())})
 
 @channel_session
 def ws_disconnect(message):
     try:
         label = message.channel_session['room']
         room = Room.objects.get(label=label)
-        Group('chat-'+label, channel_layer=message.channel_layer).discard(message.reply_channel)
+        Group('chat-'+label).discard(message.reply_channel)
     except (KeyError, Room.DoesNotExist):
         pass

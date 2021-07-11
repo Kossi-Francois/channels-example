@@ -1,0 +1,27 @@
+To deploy the application you must have Git and Heroku CLI installed on your machine
+
+
+1- go to app dir  #folder containing <manage.py> 
+2- git init 
+3- git add . 
+4- git commit -m "first commit"
+
+5- heroku create  yourappName
+6- git push heroku main
+
+7-heroku run python manage.py makemigrations
+8-heroku run python manage.py migrate
+
+9-heroku ps:scale web=1:free worker=1:free
+
+
+
+
+if redis or postgres did not install during deployment, you can still install it with this command
+10- heroku addons:create heroku-redis:hobby-dev -a yourappName
+11- heroku addons:create heroku-postgresql:hobby-dev -a yourappName
+
+
+
+
+

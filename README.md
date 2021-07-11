@@ -1,25 +1,25 @@
-# Django Channels Example [![Build Status](https://travis-ci.org/jacobian/channels-example.svg?branch=master)](https://travis-ci.org/jacobian/channels-example)
+# Try out Django Channels today! 
 
 This is an example app demonstrating how to use (and deploy) [Django Channels](http://channels.readthedocs.org/en/latest/). It's a simple real-time chat app — like a very, very light-weight Slack. There are a bunch of rooms, and everyone in the same room can chat, in real-time, with each other (using WebSockets).
 
-For a walkthrough of what's going on here, see [my article over on the Heroku blog](https://blog.heroku.com/archives/2016/3/17/in_deep_with_django_channels_the_future_of_real_time_apps_in_django?).
 
-You can visit [my deployment of the example online](https://django-channels-example.herokuapp.com/), or deploy your own copy to Heroku with this button (which requires a free Heroku account):
+## To deploy to Heroku:
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/jacobian/channels-example)
+First, press the Heroku button to deploy the app:
 
-## Running locally
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/mattotodd/channels-example)
 
-To run this app locally, you'll need Python, Postgres, and Redis. (On my Mac, I installed [Postgres.app](http://postgresapp.com/documentation/) and Redis from Homebrew (`brew install redis`).)
+Once the app [finishes deploying](Screenshot 2016-03-23 12.23.19.png), press *Manage App*, and turn on the worker dyno by pressing the pencil icon and toggling the **on** switch:
 
-Then, to run:
+![Edit](Screenshot 2016-03-24 13.25.26.png)
+![Turn on and confirm](Screenshot 2016-03-24 13.25.46.png)
+![Turn on](Screenshot 2016-03-24 13.25.54.png)
+![Confirm](Screenshot 2016-03-24 13.26.03.png)
 
-- Install requirements: `pip install -r requirements.txt` (you almost certainly want to do this in a virtualenv).
-- Migrate: `DATABASE_URL=postgres:///... python manage.py migrate`
-- If you use [heroku local](https://devcenter.heroku.com/articles/heroku-local), or [foreman](https://github.com/ddollar/foreman)/[forego](https://github.com/ddollar/forego), edit `.env` to add `DATABASE_URL` and `REDIS_URL`, then start `heroku local`/`foreman`/`forego`.
-- Or, to run locally with `runserver`, set `DATABASE_URL` and `REDIS_URL` in your environ, then run `python manage.py runserver`.
-- Or, to run locally with multiple proceses by setting the environ, then running the two commands (`daphne` and `runworker`) as shown in the `Procfile`.
+Then you're ready to use the app! You can press the *Open App* button on your Heroku dashboard, and make your own chatroom. For DjangoCon attendees, now you can come back to our booth, show us your app, and we'll give you a brand new pair of limited-edition Heroku socks.
 
-## Running with Docker
+## Further Reading
 
-Tomas Tomecek put together a [Dockerized version of this app](https://github.com/TomasTomecek/open-house-2016-demo).
+For a walkthrough of what's going on here, see [Jacob Kaplan-Moss's article over on the Heroku blog](https://blog.heroku.com/archives/2016/3/17/in_deep_with_django_channels_the_future_of_real_time_apps_in_django?).
+
+To get a walkthrough of how to run this app locally, see [Jacob's original GitHub repo](https://github.com/jacobian/channels-example).

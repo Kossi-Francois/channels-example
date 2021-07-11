@@ -1,7 +1,7 @@
 {
     "name": "Django Channels Example",
     "description": "A real-time chat app, built as a simple example of using Django Channels ",
-    "repository": "https://github.com/jacobian/channels-example",
+    "repository": "https://github.com/mattotodd/channels-example",
     "keywords": ["django", "channels", "websockets"],
     "scripts": {
         "postdeploy": "python manage.py migrate"
@@ -12,15 +12,5 @@
             "generator": "secret"
         }
     },
-    "addons": ["heroku-postgresql", "heroku-redis"],
-    "formation": {
-        "web": {
-            "quantity": 1,
-          " size": "Free"
-        },
-        "worker": {
-            "quantity": 1,
-            "size": "Free"
-        }
-    }
+    "addons": ["heroku-postgresql", "heroku-redis"]
 }
